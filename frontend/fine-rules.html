@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fine Rules Configuration | Smart Library</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="logo-badge">📚</div>
+                <div>
+                    <div class="brand-title">Smart Library</div>
+                    <div class="brand-subtitle">Automated Fine System</div>
+                </div>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="sidebar-category">Core Operations</li>
+                <li><a href="dashboard.html"><span class="icon">📊</span> Dashboard</a></li>
+                <li><a href="books.html"><span class="icon">📖</span> Manage Books</a></li>
+                <li><a href="members.html"><span class="icon">👥</span> Manage Members</a></li>
+                
+                <li class="sidebar-category">Circulation</li>
+                <li><a href="borrow.html"><span class="icon">📤</span> Issue Book</a></li>
+                <li><a href="return.html"><span class="icon">📥</span> Return Book</a></li>
+                <li><a href="reservations.html"><span class="icon">🔖</span> Reservations</a></li>
+
+                <li class="sidebar-category">Finance & Governance</li>
+                <li><a href="fines.html"><span class="icon">💰</span> Fines & Payments</a></li>
+                <li><a href="fine-rules.html" class="active"><span class="icon">⚙️</span> Fine Rules</a></li>
+
+                <li class="sidebar-category">Operations & Audit</li>
+                <li><a href="maintenance.html"><span class="icon">🛠️</span> Maintenance</a></li>
+                <li><a href="alerts.html"><span class="icon">🔔</span> Alerts</a></li>
+                <li><a href="transactions.html"><span class="icon">📑</span> Transactions</a></li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="user-snippet">
+                    <div class="user-avatar" id="avatarLetter">A</div>
+                    <div class="user-info">
+                        <div class="user-name" id="displayUsername">Librarian</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                </div>
+                <button class="btn-logout" id="btnLogout" title="Sign Out">🚪</button>
+            </div>
+        </aside>
+
+        <!-- Main Wrapper -->
+        <main class="main-wrapper">
+            <header class="top-navbar">
+                <div class="page-headline">
+                    <h1>Fine Rules & Penalties Policy</h1>
+                    <p>Configure automated calculation parameters applied by Spring Boot backend during book check-in</p>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 24px;">
+                    <!-- Active Policy Form -->
+                    <div class="panel">
+                        <div class="panel-header">
+                            <div class="panel-title">⚙️ Update Active Fine Policy</div>
+                        </div>
+                        <div class="panel-body">
+                            <form id="fineRuleForm">
+                                <input type="hidden" id="ruleId">
+                                
+                                <div class="form-group">
+                                    <label for="finePerDay">Fine Rate Per Overdue Day (₹) *</label>
+                                    <input type="number" id="finePerDay" class="form-control" step="0.5" min="0" placeholder="e.g. 5.00" required>
+                                    <small style="color: var(--slate-500);">Amount charged for each day past the due date.</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="gracePeriod">Grace Period (Days) *</label>
+                                    <input type="number" id="gracePeriod" class="form-control" min="0" placeholder="e.g. 0" required>
+                                    <small style="color: var(--slate-500);">Days allowed before fines begin accruing (default 0).</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="maximumFine">Maximum Fine Cap (₹) *</label>
+                                    <input type="number" id="maximumFine" class="form-control" step="1" min="1" placeholder="e.g. 100.00" required>
+                                    <small style="color: var(--slate-500);">Maximum upper limit a fine can reach per borrow.</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="membershipType">Applies To Membership</label>
+                                    <select id="membershipType" class="form-control">
+                                        <option value="ALL">ALL (Students, Faculty, Staff)</option>
+                                        <option value="Student">Students Only</option>
+                                        <option value="Faculty">Faculty Only</option>
+                                    </select>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary" id="btnSaveRule" style="width: 100%;">
+                                    💾 Save & Apply Rule In Backend
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Policy History / Configured Rules Table -->
+                    <div class="panel">
+                        <div class="panel-header">
+                            <div class="panel-title">📋 Configured Policies History</div>
+                        </div>
+                        <div class="panel-body" style="padding: 0;">
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Rule ID</th>
+                                            <th>Rate / Day</th>
+                                            <th>Grace</th>
+                                            <th>Max Cap</th>
+                                            <th>Scope</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="rulesTableBody">
+                                        <tr><td colspan="6" style="text-align: center; padding: 24px;">Loading rules...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/fine-rules.js"></script>
+</body>
+</html>

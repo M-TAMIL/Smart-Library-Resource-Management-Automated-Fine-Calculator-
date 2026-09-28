@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Maintenance & Repairs | Smart Library</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="logo-badge">📚</div>
+                <div>
+                    <div class="brand-title">Smart Library</div>
+                    <div class="brand-subtitle">Automated Fine System</div>
+                </div>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="sidebar-category">Core Operations</li>
+                <li><a href="dashboard.html"><span class="icon">📊</span> Dashboard</a></li>
+                <li><a href="books.html"><span class="icon">📖</span> Manage Books</a></li>
+                <li><a href="members.html"><span class="icon">👥</span> Manage Members</a></li>
+                
+                <li class="sidebar-category">Circulation</li>
+                <li><a href="borrow.html"><span class="icon">📤</span> Issue Book</a></li>
+                <li><a href="return.html"><span class="icon">📥</span> Return Book</a></li>
+                <li><a href="reservations.html"><span class="icon">🔖</span> Reservations</a></li>
+
+                <li class="sidebar-category">Finance & Governance</li>
+                <li><a href="fines.html"><span class="icon">💰</span> Fines & Payments</a></li>
+                <li><a href="fine-rules.html"><span class="icon">⚙️</span> Fine Rules</a></li>
+
+                <li class="sidebar-category">Operations & Audit</li>
+                <li><a href="maintenance.html" class="active"><span class="icon">🛠️</span> Maintenance</a></li>
+                <li><a href="alerts.html"><span class="icon">🔔</span> Alerts</a></li>
+                <li><a href="transactions.html"><span class="icon">📑</span> Transactions</a></li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="user-snippet">
+                    <div class="user-avatar" id="avatarLetter">A</div>
+                    <div class="user-info">
+                        <div class="user-name" id="displayUsername">Librarian</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                </div>
+                <button class="btn-logout" id="btnLogout" title="Sign Out">🚪</button>
+            </div>
+        </aside>
+
+        <!-- Main Wrapper -->
+        <main class="main-wrapper">
+            <header class="top-navbar">
+                <div class="page-headline">
+                    <h1>Book Maintenance & Preservation</h1>
+                    <p>Track binding, page mending, physical restoration, and inventory re-induction</p>
+                </div>
+                <div class="top-actions">
+                    <button class="btn btn-primary" id="btnOpenMaintModal">🛠️ Send Book to Maintenance</button>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title">🛠️ Active & Historical Maintenance Records</div>
+                    </div>
+
+                    <div class="panel-body" style="padding: 0;">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Maint ID</th>
+                                        <th>Book Title</th>
+                                        <th>Reason / Issue</th>
+                                        <th>Start Date</th>
+                                        <th>Target Completion</th>
+                                        <th>Actual Completion</th>
+                                        <th>Remarks</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="maintenanceTableBody">
+                                    <tr><td colspan="9" style="text-align: center; padding: 24px;">Loading maintenance records...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Start Maintenance Modal -->
+    <div class="modal-overlay" id="startMaintModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>🛠️ Send Book to Maintenance</h3>
+                <button class="modal-close" onclick="closeModal('startMaintModal')">&times;</button>
+            </div>
+            <form id="startMaintForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="maintBook">Select Available Book *</label>
+                        <select id="maintBook" class="form-control" required>
+                            <option value="">-- Choose Book --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="maintReason">Reason / Repair Details *</label>
+                        <input type="text" id="maintReason" class="form-control" placeholder="e.g. Spine damage, loose binding, torn pages" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="maintExpectedDate">Expected Completion Date</label>
+                        <input type="date" id="maintExpectedDate" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="maintRemarks">Internal Remarks</label>
+                        <textarea id="maintRemarks" class="form-control" rows="2" placeholder="e.g. Sent to University Central Bookbinding Unit"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('startMaintModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="btnSubmitMaint">Start Maintenance</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/maintenance.js"></script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fine Management & Collection | Smart Library</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="logo-badge">📚</div>
+                <div>
+                    <div class="brand-title">Smart Library</div>
+                    <div class="brand-subtitle">Automated Fine System</div>
+                </div>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="sidebar-category">Core Operations</li>
+                <li><a href="dashboard.html"><span class="icon">📊</span> Dashboard</a></li>
+                <li><a href="books.html"><span class="icon">📖</span> Manage Books</a></li>
+                <li><a href="members.html"><span class="icon">👥</span> Manage Members</a></li>
+                
+                <li class="sidebar-category">Circulation</li>
+                <li><a href="borrow.html"><span class="icon">📤</span> Issue Book</a></li>
+                <li><a href="return.html"><span class="icon">📥</span> Return Book</a></li>
+                <li><a href="reservations.html"><span class="icon">🔖</span> Reservations</a></li>
+
+                <li class="sidebar-category">Finance & Governance</li>
+                <li><a href="fines.html" class="active"><span class="icon">💰</span> Fines & Payments</a></li>
+                <li><a href="fine-rules.html"><span class="icon">⚙️</span> Fine Rules</a></li>
+
+                <li class="sidebar-category">Operations & Audit</li>
+                <li><a href="maintenance.html"><span class="icon">🛠️</span> Maintenance</a></li>
+                <li><a href="alerts.html"><span class="icon">🔔</span> Alerts</a></li>
+                <li><a href="transactions.html"><span class="icon">📑</span> Transactions</a></li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="user-snippet">
+                    <div class="user-avatar" id="avatarLetter">A</div>
+                    <div class="user-info">
+                        <div class="user-name" id="displayUsername">Librarian</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                </div>
+                <button class="btn-logout" id="btnLogout" title="Sign Out">🚪</button>
+            </div>
+        </aside>
+
+        <!-- Main Wrapper -->
+        <main class="main-wrapper">
+            <header class="top-navbar">
+                <div class="page-headline">
+                    <h1>Fine Management & Dues Settlement</h1>
+                    <p>Track automated overdue penalties, record cash or digital receipts, and clear member fines</p>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <!-- Summary Metrics Bar -->
+                <div class="metrics-grid" style="margin-bottom: 24px;">
+                    <div class="metric-card danger">
+                        <div>
+                            <div class="metric-label">Uncollected Fines</div>
+                            <div class="metric-val" id="pendingFinesCount">-</div>
+                            <div class="metric-sub" id="pendingFinesTotal">₹0.00 outstanding</div>
+                        </div>
+                        <div class="metric-icon icon-danger">⏳</div>
+                    </div>
+
+                    <div class="metric-card success">
+                        <div>
+                            <div class="metric-label">Paid & Settled Fines</div>
+                            <div class="metric-val" id="paidFinesCount">-</div>
+                            <div class="metric-sub" id="paidFinesTotal">₹0.00 collected</div>
+                        </div>
+                        <div class="metric-icon icon-success">💰</div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title">💳 Fines Ledger</div>
+                        <div class="panel-actions">
+                            <select id="fineStatusFilter" class="form-control" style="width: 170px;">
+                                <option value="">All Statuses</option>
+                                <option value="PENDING" selected>Pending Only</option>
+                                <option value="PAID">Paid Only</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="panel-body" style="padding: 0;">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Fine ID</th>
+                                        <th>Member</th>
+                                        <th>Book Title</th>
+                                        <th>Borrow ID</th>
+                                        <th>Overdue Days</th>
+                                        <th>Fine Amount</th>
+                                        <th>Fine Date</th>
+                                        <th>Payment Date</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="finesTableBody">
+                                    <tr><td colspan="10" style="text-align: center; padding: 24px;">Loading fines...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/fines.js"></script>
+</body>
+</html>

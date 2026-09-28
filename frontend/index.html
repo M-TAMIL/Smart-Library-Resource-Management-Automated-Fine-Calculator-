@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Librarian Login | Smart Library Resource Management</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+</head>
+<body class="login-body">
+    <div class="login-card">
+        <div class="login-brand">
+            <div class="logo-icon">📖</div>
+            <h2>Smart Library</h2>
+            <p>Resource Management & Automated Fine Calculator</p>
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" class="form-control" placeholder="Enter username (e.g. admin)" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" class="form-control" placeholder="Enter password (e.g. admin123)" required>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <button type="button" class="btn btn-outline btn-sm" id="btnFillDemo" style="width: 100%; border-style: dashed;">
+                    ⚡ Auto-fill Default Demo Credentials (admin / admin123)
+                </button>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="btnLogin" style="width: 100%; padding: 12px;">
+                Secure Librarian Sign In ➔
+            </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 24px; font-size: 12px; color: var(--slate-400);">
+            Integrated with Spring Boot REST API & MySQL Database
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        document.getElementById('btnFillDemo').addEventListener('click', () => {
+            document.getElementById('username').value = 'admin';
+            document.getElementById('password').value = 'admin123';
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btnLogin');
+            btn.disabled = true;
+            btn.textContent = 'Authenticating...';
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await api.post('/auth/login', { username, password });
+                if (response.authenticated) {
+                    auth.setUser({
+                        name: response.username,
+                        role: response.role
+                    }, response.token);
+                    showToast('Login successful! Redirecting to Dashboard...', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 800);
+                } else {
+                    showToast(response.message || 'Authentication failed', 'error');
+                }
+            } catch (err) {
+                showToast(err.message || 'Login failed. Please check credentials or backend server.', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Secure Librarian Sign In ➔';
+            }
+        });
+    </script>
+</body>
+</html>

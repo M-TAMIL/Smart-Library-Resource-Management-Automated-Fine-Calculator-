@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction History & Audit Trail | Smart Library</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="logo-badge">📚</div>
+                <div>
+                    <div class="brand-title">Smart Library</div>
+                    <div class="brand-subtitle">Automated Fine System</div>
+                </div>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="sidebar-category">Core Operations</li>
+                <li><a href="dashboard.html"><span class="icon">📊</span> Dashboard</a></li>
+                <li><a href="books.html"><span class="icon">📖</span> Manage Books</a></li>
+                <li><a href="members.html"><span class="icon">👥</span> Manage Members</a></li>
+                
+                <li class="sidebar-category">Circulation</li>
+                <li><a href="borrow.html"><span class="icon">📤</span> Issue Book</a></li>
+                <li><a href="return.html"><span class="icon">📥</span> Return Book</a></li>
+                <li><a href="reservations.html"><span class="icon">🔖</span> Reservations</a></li>
+
+                <li class="sidebar-category">Finance & Governance</li>
+                <li><a href="fines.html"><span class="icon">💰</span> Fines & Payments</a></li>
+                <li><a href="fine-rules.html"><span class="icon">⚙️</span> Fine Rules</a></li>
+
+                <li class="sidebar-category">Operations & Audit</li>
+                <li><a href="maintenance.html"><span class="icon">🛠️</span> Maintenance</a></li>
+                <li><a href="alerts.html"><span class="icon">🔔</span> Alerts</a></li>
+                <li><a href="transactions.html" class="active"><span class="icon">📑</span> Transactions</a></li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="user-snippet">
+                    <div class="user-avatar" id="avatarLetter">A</div>
+                    <div class="user-info">
+                        <div class="user-name" id="displayUsername">Librarian</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                </div>
+                <button class="btn-logout" id="btnLogout" title="Sign Out">🚪</button>
+            </div>
+        </aside>
+
+        <!-- Main Wrapper -->
+        <main class="main-wrapper">
+            <header class="top-navbar">
+                <div class="page-headline">
+                    <h1>Transaction Audit Trail</h1>
+                    <p>Chronological record of every checkout, return, automated fine calculation, payment, and maintenance event</p>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title">📑 System Activity Ledger</div>
+                        <div class="panel-actions">
+                            <div class="search-box">
+                                <span class="search-icon">🔍</span>
+                                <input type="text" id="txSearchInput" class="form-control" placeholder="Search activities...">
+                            </div>
+                            <select id="txTypeFilter" class="form-control" style="width: 200px;">
+                                <option value="">All Action Types</option>
+                                <option value="BOOK_ISSUED">Book Issued</option>
+                                <option value="BOOK_RETURNED">Book Returned</option>
+                                <option value="FINE_CREATED">Fine Generated</option>
+                                <option value="FINE_PAID">Fine Paid</option>
+                                <option value="BOOK_RESERVED">Book Reserved</option>
+                                <option value="BOOK_ADDED">Book Added</option>
+                                <option value="BOOK_UPDATED">Book Updated</option>
+                                <option value="BOOK_DELETED">Book Deleted</option>
+                                <option value="MAINTENANCE_STARTED">Maintenance Started</option>
+                                <option value="MAINTENANCE_COMPLETED">Maintenance Completed</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="panel-body" style="padding: 0;">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Tx ID</th>
+                                        <th>Event Type</th>
+                                        <th>Description</th>
+                                        <th>Associated Member</th>
+                                        <th>Associated Book</th>
+                                        <th>Timestamp</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="transactionsTableBody">
+                                    <tr><td colspan="7" style="text-align: center; padding: 24px;">Loading transactions...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/transactions.js"></script>
+</body>
+</html>

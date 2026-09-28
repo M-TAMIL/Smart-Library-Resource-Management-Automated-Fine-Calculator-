@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Management | Smart Library</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="logo-badge">📚</div>
+                <div>
+                    <div class="brand-title">Smart Library</div>
+                    <div class="brand-subtitle">Automated Fine System</div>
+                </div>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="sidebar-category">Core Operations</li>
+                <li><a href="dashboard.html"><span class="icon">📊</span> Dashboard</a></li>
+                <li><a href="books.html" class="active"><span class="icon">📖</span> Manage Books</a></li>
+                <li><a href="members.html"><span class="icon">👥</span> Manage Members</a></li>
+                
+                <li class="sidebar-category">Circulation</li>
+                <li><a href="borrow.html"><span class="icon">📤</span> Issue Book</a></li>
+                <li><a href="return.html"><span class="icon">📥</span> Return Book</a></li>
+                <li><a href="reservations.html"><span class="icon">🔖</span> Reservations</a></li>
+
+                <li class="sidebar-category">Finance & Governance</li>
+                <li><a href="fines.html"><span class="icon">💰</span> Fines & Payments</a></li>
+                <li><a href="fine-rules.html"><span class="icon">⚙️</span> Fine Rules</a></li>
+
+                <li class="sidebar-category">Operations & Audit</li>
+                <li><a href="maintenance.html"><span class="icon">🛠️</span> Maintenance</a></li>
+                <li><a href="alerts.html"><span class="icon">🔔</span> Alerts</a></li>
+                <li><a href="transactions.html"><span class="icon">📑</span> Transactions</a></li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="user-snippet">
+                    <div class="user-avatar" id="avatarLetter">A</div>
+                    <div class="user-info">
+                        <div class="user-name" id="displayUsername">Librarian</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                </div>
+                <button class="btn-logout" id="btnLogout" title="Sign Out">🚪</button>
+            </div>
+        </aside>
+
+        <!-- Main Wrapper -->
+        <main class="main-wrapper">
+            <header class="top-navbar">
+                <div class="page-headline">
+                    <h1>Book & Resource Repository</h1>
+                    <p>Manage books catalog, monitor availability quantities, and shelf locations</p>
+                </div>
+                <div class="top-actions">
+                    <button class="btn btn-primary" id="btnOpenAddModal">➕ Add New Book</button>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title">📚 Catalog Inventory</div>
+                        <div class="panel-actions">
+                            <div class="search-box">
+                                <span class="search-icon">🔍</span>
+                                <input type="text" id="searchInput" class="form-control" placeholder="Search by title, author, ISBN...">
+                            </div>
+                            <select id="statusFilter" class="form-control" style="width: 170px;">
+                                <option value="">All Statuses</option>
+                                <option value="AVAILABLE">Available</option>
+                                <option value="BORROWED">Borrowed</option>
+                                <option value="MAINTENANCE">Maintenance</option>
+                                <option value="RESERVED">Reserved</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="panel-body" style="padding: 0;">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Book ID</th>
+                                        <th>ISBN</th>
+                                        <th>Title & Author</th>
+                                        <th>Category</th>
+                                        <th>Shelf</th>
+                                        <th>Total Qty</th>
+                                        <th>Available</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="booksTableBody">
+                                    <tr><td colspan="9" style="text-align: center; padding: 24px;">Loading books...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Book Modal -->
+    <div class="modal-overlay" id="addBookModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>➕ Add New Book</h3>
+                <button class="modal-close" onclick="closeModal('addBookModal')">&times;</button>
+            </div>
+            <form id="addBookForm">
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="isbn">ISBN *</label>
+                            <input type="text" id="isbn" class="form-control" placeholder="e.g. 978-0132350884" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <input type="text" id="category" class="form-control" placeholder="e.g. Programming">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="title">Book Title *</label>
+                        <input type="text" id="title" class="form-control" placeholder="Enter book title" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="author">Author *</label>
+                            <input type="text" id="author" class="form-control" placeholder="Author name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="publisher">Publisher</label>
+                            <input type="text" id="publisher" class="form-control" placeholder="Publisher name">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="publicationYear">Year</label>
+                            <input type="number" id="publicationYear" class="form-control" placeholder="e.g. 2023" min="1900" max="2099">
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity">Quantity *</label>
+                            <input type="number" id="quantity" class="form-control" placeholder="Copies" min="1" value="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="shelfNumber">Shelf Number</label>
+                            <input type="text" id="shelfNumber" class="form-control" placeholder="e.g. CS-03">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('addBookModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Book to Database</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Book Modal -->
+    <div class="modal-overlay" id="editBookModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>✏️ Edit Book Details</h3>
+                <button class="modal-close" onclick="closeModal('editBookModal')">&times;</button>
+            </div>
+            <form id="editBookForm">
+                <input type="hidden" id="editBookId">
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editIsbn">ISBN *</label>
+                            <input type="text" id="editIsbn" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editCategory">Category</label>
+                            <input type="text" id="editCategory" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editTitle">Book Title *</label>
+                        <input type="text" id="editTitle" class="form-control" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editAuthor">Author *</label>
+                            <input type="text" id="editAuthor" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editPublisher">Publisher</label>
+                            <input type="text" id="editPublisher" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editPublicationYear">Year</label>
+                            <input type="number" id="editPublicationYear" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="editQuantity">Total Quantity *</label>
+                            <input type="number" id="editQuantity" class="form-control" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editAvailableQuantity">Available Quantity *</label>
+                            <input type="number" id="editAvailableQuantity" class="form-control" min="0" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editShelfNumber">Shelf Number</label>
+                            <input type="text" id="editShelfNumber" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="editStatus">Status</label>
+                            <select id="editStatus" class="form-control">
+                                <option value="AVAILABLE">AVAILABLE</option>
+                                <option value="BORROWED">BORROWED</option>
+                                <option value="MAINTENANCE">MAINTENANCE</option>
+                                <option value="RESERVED">RESERVED</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('editBookModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Book</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/books.js"></script>
+</body>
+</html>

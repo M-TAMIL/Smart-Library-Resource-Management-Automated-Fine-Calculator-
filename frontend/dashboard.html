@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Librarian Dashboard | Smart Library Resource Management</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="logo-badge">📚</div>
+                <div>
+                    <div class="brand-title">Smart Library</div>
+                    <div class="brand-subtitle">Automated Fine System</div>
+                </div>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="sidebar-category">Core Operations</li>
+                <li><a href="dashboard.html" class="active"><span class="icon">📊</span> Dashboard</a></li>
+                <li><a href="books.html"><span class="icon">📖</span> Manage Books</a></li>
+                <li><a href="members.html"><span class="icon">👥</span> Manage Members</a></li>
+                
+                <li class="sidebar-category">Circulation</li>
+                <li><a href="borrow.html"><span class="icon">📤</span> Issue Book</a></li>
+                <li><a href="return.html"><span class="icon">📥</span> Return Book</a></li>
+                <li><a href="reservations.html"><span class="icon">🔖</span> Reservations</a></li>
+
+                <li class="sidebar-category">Finance & Governance</li>
+                <li><a href="fines.html"><span class="icon">💰</span> Fines & Payments</a></li>
+                <li><a href="fine-rules.html"><span class="icon">⚙️</span> Fine Rules</a></li>
+
+                <li class="sidebar-category">Operations & Audit</li>
+                <li><a href="maintenance.html"><span class="icon">🛠️</span> Maintenance</a></li>
+                <li><a href="alerts.html"><span class="icon">🔔</span> Alerts</a></li>
+                <li><a href="transactions.html"><span class="icon">📑</span> Transactions</a></li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="user-snippet">
+                    <div class="user-avatar" id="avatarLetter">A</div>
+                    <div class="user-info">
+                        <div class="user-name" id="displayUsername">Librarian</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                </div>
+                <button class="btn-logout" id="btnLogout" title="Sign Out">🚪</button>
+            </div>
+        </aside>
+
+        <!-- Main Wrapper -->
+        <main class="main-wrapper">
+            <header class="top-navbar">
+                <div class="page-headline">
+                    <h1>Librarian Control Dashboard</h1>
+                    <p>Live resource metrics, circulation status, and automated fine calculation overview</p>
+                </div>
+                <div class="top-actions">
+                    <div class="live-badge">
+                        <span class="live-dot"></span> MySQL Connected
+                    </div>
+                    <button class="btn btn-outline btn-sm" id="btnRefresh">🔄 Refresh Live Data</button>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <!-- 8 Metric Cards Grid -->
+                <div class="metrics-grid">
+                    <!-- Total Books -->
+                    <div class="metric-card primary">
+                        <div>
+                            <div class="metric-label">Total Books (Copies)</div>
+                            <div class="metric-val" id="totalBooks">-</div>
+                            <div class="metric-sub">Cataloged in repository</div>
+                        </div>
+                        <div class="metric-icon icon-primary">📚</div>
+                    </div>
+
+                    <!-- Available Books -->
+                    <div class="metric-card success">
+                        <div>
+                            <div class="metric-label">Available Books</div>
+                            <div class="metric-val" id="availableBooks">-</div>
+                            <div class="metric-sub">Ready for checkout</div>
+                        </div>
+                        <div class="metric-icon icon-success">✅</div>
+                    </div>
+
+                    <!-- Borrowed Books -->
+                    <div class="metric-card warning">
+                        <div>
+                            <div class="metric-label">Borrowed Books</div>
+                            <div class="metric-val" id="borrowedBooks">-</div>
+                            <div class="metric-sub">Currently in circulation</div>
+                        </div>
+                        <div class="metric-icon icon-warning">📤</div>
+                    </div>
+
+                    <!-- Overdue Books -->
+                    <div class="metric-card danger">
+                        <div>
+                            <div class="metric-label">Overdue Books</div>
+                            <div class="metric-val" id="overdueBooks">-</div>
+                            <div class="metric-sub">Past return due date</div>
+                        </div>
+                        <div class="metric-icon icon-danger">⚠️</div>
+                    </div>
+
+                    <!-- Total Members -->
+                    <div class="metric-card info">
+                        <div>
+                            <div class="metric-label">Total Members</div>
+                            <div class="metric-val" id="totalMembers">-</div>
+                            <div class="metric-sub">Students & faculty registered</div>
+                        </div>
+                        <div class="metric-icon icon-info">👥</div>
+                    </div>
+
+                    <!-- Pending Fines -->
+                    <div class="metric-card danger">
+                        <div>
+                            <div class="metric-label">Pending Fines</div>
+                            <div class="metric-val" id="pendingFines">-</div>
+                            <div class="metric-sub" id="pendingFineAmount">₹0.00 uncollected</div>
+                        </div>
+                        <div class="metric-icon icon-danger">💰</div>
+                    </div>
+
+                    <!-- Active Reservations -->
+                    <div class="metric-card purple">
+                        <div>
+                            <div class="metric-label">Active Reservations</div>
+                            <div class="metric-val" id="activeReservations">-</div>
+                            <div class="metric-sub">Queued book holds</div>
+                        </div>
+                        <div class="metric-icon icon-purple">🔖</div>
+                    </div>
+
+                    <!-- Maintenance -->
+                    <div class="metric-card warning">
+                        <div>
+                            <div class="metric-label">Under Maintenance</div>
+                            <div class="metric-val" id="booksUnderMaintenance">-</div>
+                            <div class="metric-sub">Repair & binding</div>
+                        </div>
+                        <div class="metric-icon icon-warning">🛠️</div>
+                    </div>
+                </div>
+
+                <!-- Quick Action Buttons Bar -->
+                <div style="margin-bottom: 28px; display: flex; gap: 12px; flex-wrap: wrap;">
+                    <a href="borrow.html" class="btn btn-primary">📤 Issue Book</a>
+                    <a href="return.html" class="btn btn-success">📥 Return Book & Calculate Fine</a>
+                    <a href="books.html" class="btn btn-outline">➕ Add New Book</a>
+                    <a href="members.html" class="btn btn-outline">👤 Register Member</a>
+                    <a href="fines.html" class="btn btn-outline">💳 Fine Management</a>
+                </div>
+
+                <!-- Two-column Section: Recent Transactions & Live Alerts -->
+                <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px;">
+                    <!-- Recent Transactions -->
+                    <div class="panel">
+                        <div class="panel-header">
+                            <div class="panel-title">📑 Recent Library Transactions</div>
+                            <a href="transactions.html" class="btn btn-outline btn-sm">View Full Log ➔</a>
+                        </div>
+                        <div class="panel-body" style="padding: 0;">
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                            <th>Date & Time</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recentTransactionsBody">
+                                        <tr><td colspan="4" style="text-align: center; padding: 24px;">Loading transactions...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Alerts -->
+                    <div class="panel">
+                        <div class="panel-header">
+                            <div class="panel-title">🔔 Recent Alerts</div>
+                            <a href="alerts.html" class="btn btn-outline btn-sm">All Alerts ➔</a>
+                        </div>
+                        <div class="panel-body">
+                            <div id="recentAlertsContainer">
+                                <p style="text-align: center; color: var(--slate-400); padding: 20px;">Loading alerts...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

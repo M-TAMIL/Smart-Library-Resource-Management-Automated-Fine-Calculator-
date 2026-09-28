@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Reservations | Smart Library</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="logo-badge">📚</div>
+                <div>
+                    <div class="brand-title">Smart Library</div>
+                    <div class="brand-subtitle">Automated Fine System</div>
+                </div>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="sidebar-category">Core Operations</li>
+                <li><a href="dashboard.html"><span class="icon">📊</span> Dashboard</a></li>
+                <li><a href="books.html"><span class="icon">📖</span> Manage Books</a></li>
+                <li><a href="members.html"><span class="icon">👥</span> Manage Members</a></li>
+                
+                <li class="sidebar-category">Circulation</li>
+                <li><a href="borrow.html"><span class="icon">📤</span> Issue Book</a></li>
+                <li><a href="return.html"><span class="icon">📥</span> Return Book</a></li>
+                <li><a href="reservations.html" class="active"><span class="icon">🔖</span> Reservations</a></li>
+
+                <li class="sidebar-category">Finance & Governance</li>
+                <li><a href="fines.html"><span class="icon">💰</span> Fines & Payments</a></li>
+                <li><a href="fine-rules.html"><span class="icon">⚙️</span> Fine Rules</a></li>
+
+                <li class="sidebar-category">Operations & Audit</li>
+                <li><a href="maintenance.html"><span class="icon">🛠️</span> Maintenance</a></li>
+                <li><a href="alerts.html"><span class="icon">🔔</span> Alerts</a></li>
+                <li><a href="transactions.html"><span class="icon">📑</span> Transactions</a></li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="user-snippet">
+                    <div class="user-avatar" id="avatarLetter">A</div>
+                    <div class="user-info">
+                        <div class="user-name" id="displayUsername">Librarian</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                </div>
+                <button class="btn-logout" id="btnLogout" title="Sign Out">🚪</button>
+            </div>
+        </aside>
+
+        <!-- Main Wrapper -->
+        <main class="main-wrapper">
+            <header class="top-navbar">
+                <div class="page-headline">
+                    <h1>Book Reservations & Hold Queue</h1>
+                    <p>Manage member hold requests on currently loaned or low-availability titles</p>
+                </div>
+                <div class="top-actions">
+                    <button class="btn btn-primary" id="btnOpenReserveModal">🔖 New Book Reservation</button>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title">🔖 Reservation Queue</div>
+                        <div class="panel-actions">
+                            <select id="resStatusFilter" class="form-control" style="width: 170px;">
+                                <option value="">All Statuses</option>
+                                <option value="ACTIVE" selected>Active Holds Only</option>
+                                <option value="COMPLETED">Completed</option>
+                                <option value="CANCELLED">Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="panel-body" style="padding: 0;">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Reservation ID</th>
+                                        <th>Member Name</th>
+                                        <th>Book Title</th>
+                                        <th>Book Current Stock</th>
+                                        <th>Reserved On</th>
+                                        <th>Hold Expires</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reservationsTableBody">
+                                    <tr><td colspan="8" style="text-align: center; padding: 24px;">Loading reservations...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Create Reservation Modal -->
+    <div class="modal-overlay" id="reserveModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>🔖 Reserve a Book</h3>
+                <button class="modal-close" onclick="closeModal('reserveModal')">&times;</button>
+            </div>
+            <form id="reserveForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="reserveMember">Select Active Member *</label>
+                        <select id="reserveMember" class="form-control" required>
+                            <option value="">-- Choose Member --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reserveBook">Select Book to Hold *</label>
+                        <select id="reserveBook" class="form-control" required>
+                            <option value="">-- Choose Book --</option>
+                        </select>
+                    </div>
+
+                    <div style="background: var(--slate-100); padding: 12px 16px; border-radius: var(--radius-sm); font-size: 13px; color: var(--slate-600);">
+                        ℹ️ <strong>Reservation Policy:</strong> Holds remain active for 7 days. When an unavailable book is returned, a reservation notification alert is automatically broadcasted.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('reserveModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="btnSubmitReserve">Confirm Reservation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/reservations.js"></script>
+</body>
+</html>

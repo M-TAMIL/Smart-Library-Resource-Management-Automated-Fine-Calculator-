@@ -1,0 +1,569 @@
+{
+	"info": {
+		"_postman_id": "7e2914df-78d5-4c4b-9afa-smartlibrary-v1",
+		"name": "Smart Library Resource Management & Automated Fine Calculator API",
+		"description": "Full Postman API test collection for Smart Library Management System with automated fine calculations, circulation, members, reservations, maintenance, and transaction tracking.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/api",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "01 - Authentication",
+			"item": [
+				{
+					"name": "Librarian Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "02 - Dashboard",
+			"item": [
+				{
+					"name": "Get Dashboard Summary",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/dashboard/summary",
+							"host": ["{{baseUrl}}"],
+							"path": ["dashboard", "summary"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "03 - Books Management",
+			"item": [
+				{
+					"name": "Get All Books",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/books",
+							"host": ["{{baseUrl}}"],
+							"path": ["books"]
+						}
+					}
+				},
+				{
+					"name": "Search Books",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/books?search=Clean",
+							"host": ["{{baseUrl}}"],
+							"path": ["books"],
+							"query": [
+								{
+									"key": "search",
+									"value": "Clean"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Available Books",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/books/available",
+							"host": ["{{baseUrl}}"],
+							"path": ["books", "available"]
+						}
+					}
+				},
+				{
+					"name": "Add New Book",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"isbn\": \"978-0134685991\",\n    \"title\": \"Effective Java\",\n    \"author\": \"Joshua Bloch\",\n    \"category\": \"Programming\",\n    \"publisher\": \"Addison-Wesley\",\n    \"publicationYear\": 2018,\n    \"quantity\": 5,\n    \"availableQuantity\": 5,\n    \"shelfNumber\": \"CS-05\",\n    \"status\": \"AVAILABLE\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/books",
+							"host": ["{{baseUrl}}"],
+							"path": ["books"]
+						}
+					}
+				},
+				{
+					"name": "Get Book by ID",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/books/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["books", "1"]
+						}
+					}
+				},
+				{
+					"name": "Update Book",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"shelfNumber\": \"CS-01-A\",\n    \"quantity\": 6\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/books/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["books", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "04 - Members Management",
+			"item": [
+				{
+					"name": "Get All Members",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/members",
+							"host": ["{{baseUrl}}"],
+							"path": ["members"]
+						}
+					}
+				},
+				{
+					"name": "Add New Member",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Suresh Kumar\",\n    \"email\": \"suresh@college.edu\",\n    \"phone\": \"9876543220\",\n    \"department\": \"CSE\",\n    \"membershipType\": \"Student\",\n    \"status\": \"ACTIVE\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/members",
+							"host": ["{{baseUrl}}"],
+							"path": ["members"]
+						}
+					}
+				},
+				{
+					"name": "Get Member by ID",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/members/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["members", "1"]
+						}
+					}
+				},
+				{
+					"name": "Update Member",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"phone\": \"9876500000\",\n    \"status\": \"ACTIVE\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/members/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["members", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "05 - Borrowing & Circulation",
+			"item": [
+				{
+					"name": "Get All Borrow Records",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/borrows",
+							"host": ["{{baseUrl}}"],
+							"path": ["borrows"]
+						}
+					}
+				},
+				{
+					"name": "Get Active Borrows",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/borrows/active",
+							"host": ["{{baseUrl}}"],
+							"path": ["borrows", "active"]
+						}
+					}
+				},
+				{
+					"name": "Get Overdue Borrows",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/borrows/overdue",
+							"host": ["{{baseUrl}}"],
+							"path": ["borrows", "overdue"]
+						}
+					}
+				},
+				{
+					"name": "Issue Book (Checkout)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"memberId\": 1,\n    \"bookId\": 2,\n    \"borrowDate\": \"2026-09-26\",\n    \"dueDate\": \"2026-10-10\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/borrows",
+							"host": ["{{baseUrl}}"],
+							"path": ["borrows"]
+						}
+					}
+				},
+				{
+					"name": "Return Book (Automated Fine Calculation)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"returnDate\": \"2026-09-26\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/borrows/1/return",
+							"host": ["{{baseUrl}}"],
+							"path": ["borrows", "1", "return"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "06 - Fines & Policies",
+			"item": [
+				{
+					"name": "Get All Fines",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/fines",
+							"host": ["{{baseUrl}}"],
+							"path": ["fines"]
+						}
+					}
+				},
+				{
+					"name": "Get Pending Fines",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/fines/pending",
+							"host": ["{{baseUrl}}"],
+							"path": ["fines", "pending"]
+						}
+					}
+				},
+				{
+					"name": "Pay Fine",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{baseUrl}}/fines/1/pay",
+							"host": ["{{baseUrl}}"],
+							"path": ["fines", "1", "pay"]
+						}
+					}
+				},
+				{
+					"name": "Get Active Fine Rule",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/fine-rules/active",
+							"host": ["{{baseUrl}}"],
+							"path": ["fine-rules", "active"]
+						}
+					}
+				},
+				{
+					"name": "Update Fine Rule",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"finePerDay\": 5.0,\n    \"gracePeriod\": 0,\n    \"maximumFine\": 100.0,\n    \"status\": \"ACTIVE\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/fine-rules/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["fine-rules", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "07 - Reservations",
+			"item": [
+				{
+					"name": "Get All Reservations",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/reservations",
+							"host": ["{{baseUrl}}"],
+							"path": ["reservations"]
+						}
+					}
+				},
+				{
+					"name": "Create Reservation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"memberId\": 2,\n    \"bookId\": 3\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/reservations",
+							"host": ["{{baseUrl}}"],
+							"path": ["reservations"]
+						}
+					}
+				},
+				{
+					"name": "Complete Reservation",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{baseUrl}}/reservations/1/complete",
+							"host": ["{{baseUrl}}"],
+							"path": ["reservations", "1", "complete"]
+						}
+					}
+				},
+				{
+					"name": "Cancel Reservation",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{baseUrl}}/reservations/1/cancel",
+							"host": ["{{baseUrl}}"],
+							"path": ["reservations", "1", "cancel"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "08 - Maintenance",
+			"item": [
+				{
+					"name": "Get Maintenance Records",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/maintenance",
+							"host": ["{{baseUrl}}"],
+							"path": ["maintenance"]
+						}
+					}
+				},
+				{
+					"name": "Send Book to Maintenance",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bookId\": 1,\n    \"reason\": \"Loose book spine repair\",\n    \"expectedCompletionDate\": \"2026-10-05\",\n    \"remarks\": \"Sent to university binding room\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/maintenance",
+							"host": ["{{baseUrl}}"],
+							"path": ["maintenance"]
+						}
+					}
+				},
+				{
+					"name": "Complete Maintenance",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"remarks\": \"Spine rebound and reinforced. Returned to shelf.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/maintenance/1/complete",
+							"host": ["{{baseUrl}}"],
+							"path": ["maintenance", "1", "complete"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "09 - Alerts",
+			"item": [
+				{
+					"name": "Get All Alerts",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/alerts",
+							"host": ["{{baseUrl}}"],
+							"path": ["alerts"]
+						}
+					}
+				},
+				{
+					"name": "Get Unread Alerts",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/alerts?status=UNREAD",
+							"host": ["{{baseUrl}}"],
+							"path": ["alerts"],
+							"query": [
+								{
+									"key": "status",
+									"value": "UNREAD"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Mark Alert Read",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{baseUrl}}/alerts/1/read",
+							"host": ["{{baseUrl}}"],
+							"path": ["alerts", "1", "read"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "10 - Transactions Audit Log",
+			"item": [
+				{
+					"name": "Get All Transactions",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/transactions",
+							"host": ["{{baseUrl}}"],
+							"path": ["transactions"]
+						}
+					}
+				},
+				{
+					"name": "Filter Transactions by Type",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/transactions?type=BOOK_ISSUED",
+							"host": ["{{baseUrl}}"],
+							"path": ["transactions"],
+							"query": [
+								{
+									"key": "type",
+									"value": "BOOK_ISSUED"
+								}
+							]
+						}
+					}
+				}
+			]
+		}
+	]
+}

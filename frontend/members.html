@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Management | Smart Library</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="logo-badge">📚</div>
+                <div>
+                    <div class="brand-title">Smart Library</div>
+                    <div class="brand-subtitle">Automated Fine System</div>
+                </div>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="sidebar-category">Core Operations</li>
+                <li><a href="dashboard.html"><span class="icon">📊</span> Dashboard</a></li>
+                <li><a href="books.html"><span class="icon">📖</span> Manage Books</a></li>
+                <li><a href="members.html" class="active"><span class="icon">👥</span> Manage Members</a></li>
+                
+                <li class="sidebar-category">Circulation</li>
+                <li><a href="borrow.html"><span class="icon">📤</span> Issue Book</a></li>
+                <li><a href="return.html"><span class="icon">📥</span> Return Book</a></li>
+                <li><a href="reservations.html"><span class="icon">🔖</span> Reservations</a></li>
+
+                <li class="sidebar-category">Finance & Governance</li>
+                <li><a href="fines.html"><span class="icon">💰</span> Fines & Payments</a></li>
+                <li><a href="fine-rules.html"><span class="icon">⚙️</span> Fine Rules</a></li>
+
+                <li class="sidebar-category">Operations & Audit</li>
+                <li><a href="maintenance.html"><span class="icon">🛠️</span> Maintenance</a></li>
+                <li><a href="alerts.html"><span class="icon">🔔</span> Alerts</a></li>
+                <li><a href="transactions.html"><span class="icon">📑</span> Transactions</a></li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="user-snippet">
+                    <div class="user-avatar" id="avatarLetter">A</div>
+                    <div class="user-info">
+                        <div class="user-name" id="displayUsername">Librarian</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                </div>
+                <button class="btn-logout" id="btnLogout" title="Sign Out">🚪</button>
+            </div>
+        </aside>
+
+        <!-- Main Wrapper -->
+        <main class="main-wrapper">
+            <header class="top-navbar">
+                <div class="page-headline">
+                    <h1>Member Registry</h1>
+                    <p>Manage student, faculty, and staff library memberships and circulation eligibility</p>
+                </div>
+                <div class="top-actions">
+                    <button class="btn btn-primary" id="btnOpenAddMember">👤 Register New Member</button>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title">👥 Registered Patrons</div>
+                        <div class="panel-actions">
+                            <div class="search-box">
+                                <span class="search-icon">🔍</span>
+                                <input type="text" id="memberSearchInput" class="form-control" placeholder="Search by name, email, department...">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-body" style="padding: 0;">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Member ID</th>
+                                        <th>Name</th>
+                                        <th>Contact Email & Phone</th>
+                                        <th>Department</th>
+                                        <th>Type</th>
+                                        <th>Registration Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="membersTableBody">
+                                    <tr><td colspan="8" style="text-align: center; padding: 24px;">Loading members...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Register Member Modal -->
+    <div class="modal-overlay" id="addMemberModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>👤 Register New Member</h3>
+                <button class="modal-close" onclick="closeModal('addMemberModal')">&times;</button>
+            </div>
+            <form id="addMemberForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="memberName">Full Name *</label>
+                        <input type="text" id="memberName" class="form-control" placeholder="e.g. Arun Kumar" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="memberEmail">Email Address *</label>
+                            <input type="email" id="memberEmail" class="form-control" placeholder="e.g. arun@college.edu" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="memberPhone">Phone Number</label>
+                            <input type="tel" id="memberPhone" class="form-control" placeholder="e.g. 9876543210">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="memberDepartment">Department *</label>
+                            <input type="text" id="memberDepartment" class="form-control" placeholder="e.g. CSE, ECE, IT" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="membershipType">Membership Type *</label>
+                            <select id="membershipType" class="form-control" required>
+                                <option value="Student">Student</option>
+                                <option value="Faculty">Faculty</option>
+                                <option value="Staff">Staff</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="memberStatus">Initial Status</label>
+                        <select id="memberStatus" class="form-control">
+                            <option value="ACTIVE">ACTIVE (Allowed to borrow)</option>
+                            <option value="INACTIVE">INACTIVE</option>
+                            <option value="BLOCKED">BLOCKED (Borrow restricted)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('addMemberModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Complete Registration</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Member Modal -->
+    <div class="modal-overlay" id="editMemberModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>✏️ Edit Member Information</h3>
+                <button class="modal-close" onclick="closeModal('editMemberModal')">&times;</button>
+            </div>
+            <form id="editMemberForm">
+                <input type="hidden" id="editMemberId">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="editMemberName">Full Name *</label>
+                        <input type="text" id="editMemberName" class="form-control" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editMemberEmail">Email Address *</label>
+                            <input type="email" id="editMemberEmail" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editMemberPhone">Phone Number</label>
+                            <input type="tel" id="editMemberPhone" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editMemberDept">Department *</label>
+                            <input type="text" id="editMemberDept" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editMemberType">Membership Type *</label>
+                            <select id="editMemberType" class="form-control" required>
+                                <option value="Student">Student</option>
+                                <option value="Faculty">Faculty</option>
+                                <option value="Staff">Staff</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editMemberStatus">Status</label>
+                        <select id="editMemberStatus" class="form-control">
+                            <option value="ACTIVE">ACTIVE</option>
+                            <option value="INACTIVE">INACTIVE</option>
+                            <option value="BLOCKED">BLOCKED</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('editMemberModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Member</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/members.js"></script>
+</body>
+</html>
